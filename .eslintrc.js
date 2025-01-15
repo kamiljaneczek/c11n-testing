@@ -6,15 +6,24 @@ module.exports = {
     'prettier'
   ],
   parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true
-    }
+    ecmaVersion: 2021,
+    sourceType: "module",
+    project: "./tsconfig.json",
   },
+  plugins: ["@typescript-eslint", "import", "unused-imports", "prettier", "check-file"],
   rules: {
     // Add custom rules here
   },
+  ignorePatterns: [
+    // ... any existing patterns ...
+    "node_modules/*",
+    "dist/*",
+    "packages/*/dist/*",
+    "packages/*/node_modules/*",
+    "**/dist/*",
+    "**/node_modules/*",
+    "**/.eslintrc.cjs",
+  ],
   settings: {
     react: {
       version: 'detect'
