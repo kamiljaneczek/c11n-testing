@@ -1,19 +1,20 @@
 import { expect } from '@playwright/test';
-import { loginButton, passwordField, userNameField } from '../lib/login/login';
+import { login, loginButton, passwordField, userNameField } from '../lib/login/login';
 import { test } from './fixtures';
 
-test('Open login page', async ({ loginPage }) => {
+test('Open login page', async ({ login }) => {
   // The page.goto('/') is now automatically handled by the custom fixture
-
-  await expect(loginPage.page).toHaveTitle(/Login Page/);
-  await expect(userNameField(loginPage.page)).toBeVisible();
-  await expect(passwordField(loginPage.page)).toBeVisible();
-  await expect(loginButton(loginPage.page)).toBeVisible();
+  const loginPage = login.page;
+  await expect(loginPage).toHaveTitle(/Login Page/);
+  await expect(userNameField(loginPage)).toBeVisible();
+  await expect(passwordField(loginPage)).toBeVisible();
+  await expect(loginButton(loginPage)).toBeVisible();
 });
 
-test('Login to Pega', async ({ c11nPage }) => {
+test('Login to Pega', async ({ c11n }) => {
   // The page.goto('/') is now automatically handled by the custom fixture
-  await expect(c11nPage.page).toHaveTitle(/Tell Us More/);
-  await expect(c11nPage.page.getByRole('heading', { name: 'Tell Us More - Refrence App' })).toBeVisible();
+  const loginPage = c11n.page;
+  await expect(loginPage).toHaveTitle(/Tell Us More/);
+  await expect(loginPage.getByRole('heading', { name: 'Tell Us More - Refrence App' })).toBeVisible();
   
 });

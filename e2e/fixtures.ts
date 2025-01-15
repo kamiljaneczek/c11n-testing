@@ -2,19 +2,19 @@ import { test as base, Locator, Page } from '@playwright/test';
 import { loginToPega } from '../lib/login/login';
 
 type C11nFixture = {
-  loginPage: LoginPage;
-  c11nPage: C11nPage;
+  login: LoginPage;
+  c11n: C11nPage;
 };
 
 
 // Extend the base test with a custom fixture
 export const test = base.extend<C11nFixture >({
-  loginPage: async ({ page }, use) => {
+  login: async ({ page }, use) => {
     await page.goto('/');
     const loginPage = new LoginPage(page);
     await use(loginPage);
     },
-   c11nPage: async ({ page }, use) => {
+   c11n: async ({ page }, use) => {
         await page.goto('/');
         await loginToPega(page);
         const c11nPage = new C11nPage(page);

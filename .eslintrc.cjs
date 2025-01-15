@@ -22,7 +22,7 @@ module.exports = {
     "packages/*/node_modules/*",
     "**/dist/*",
     "**/node_modules/*",
-    "**/.eslintrc.cjs",
+    "**/.eslintrc.js",
   ],
   settings: {
     react: {
