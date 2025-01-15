@@ -1,5 +1,1 @@
-export const mainmenu =  [
-            "Home",
-            "My work",
-                "Incidents"
-            ]
+export const mainmenu = ["Home", "My work", "Incidents"];
