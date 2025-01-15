@@ -1,5 +1,5 @@
 import { test as base, Locator, Page } from '@playwright/test';
-import { loginToPega } from '../lib/login/login';
+import { loginToPega } from '../lib/login';
 
 type C11nFixture = {
   login: LoginPage;

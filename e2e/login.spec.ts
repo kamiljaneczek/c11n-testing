@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { login, loginButton, passwordField, userNameField } from '../lib/login/login';
+import { login, loginButton, passwordField, userNameField } from '../lib/login';
 import { test } from './fixtures';
 
 test('Open login page', async ({ login }) => {
