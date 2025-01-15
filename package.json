@@ -6,7 +6,8 @@
   "scripts": {
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:headless": "playwright test --headless",
+    "test:headless": "playwright test",
+    "test:headed": "playwright test --headed",
     "check-types": "tsc --noEmit",
     "lint": "pnpm dlx eslint",
     "format": "prettier --write .",

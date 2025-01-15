@@ -2,7 +2,7 @@ const config = {
   plugins: [],
   singleQuote: false,
   semi: true,
-  printWidth: 120,
+  printWidth: 180,
   trailingComma: "es5",
   tabWidth: 2,
   useTabs: false,

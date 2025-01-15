@@ -26,4 +26,3 @@ export const incidentBaseCase = {
   customerSentiment: "Positive",
   NPS: faker.number.int({ min: 1, max: 10 }),
 };
-

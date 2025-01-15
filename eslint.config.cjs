@@ -25,15 +25,6 @@ module.exports = [
     rules: {
       ...typescript.configs["recommended"].rules,
     },
-    ignores: [
-      "node_modules/*",
-      "dist/*",
-      "packages/*/dist/*",
-      "packages/*/node_modules/*",
-      "**/dist/*",
-      "**/node_modules/*",
-      "**/.eslintrc.js",
-      "prettier.config.js",
-    ],
+    ignores: ["node_modules/*", "dist/*", "packages/*/dist/*", "packages/*/node_modules/*", "**/dist/*", "**/node_modules/*", "**/.eslintrc.js", "prettier.config.js"],
   },
 ];

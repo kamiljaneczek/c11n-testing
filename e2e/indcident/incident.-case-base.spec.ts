@@ -1,17 +1,20 @@
 import { createIncidentCase, goToNextStep } from "../../lib/case";
+
 import { test } from "../fixtures";
 
 test("I can create an incident", async ({ c11n }) => {
   const c11nPage = c11n.page;
 
-  await createIncidentCase(c11nPage);
+  const caseId = await createIncidentCase(c11nPage);
+  console.log("Case ID:", caseId);
+
   await c11nPage.getByTestId("DetermineTypeDropdown:select:control").selectOption("Product faulty or unsafe");
-  await c11nPage.getByTestId('DetermineSubtypeDropdown:select:control').selectOption('Product not as described');
+  await c11nPage.getByTestId("DetermineSubtypeDropdown:select:control").selectOption("Product not as described");
   await goToNextStep(c11nPage);
 
   await c11nPage.getByTestId("Name:input:control").click();
   await c11nPage.getByTestId("Name:input:control").fill("Mix");
-  await c11nPage.getByTestId(":backdrop:").getByRole("button", { name: "Search", exact: true }).click();    
+  await c11nPage.getByTestId(":backdrop:").getByRole("button", { name: "Search", exact: true }).click();
   await c11nPage
     .getByTestId(":backdrop:")
     .getByTestId(":fullscreen:")
@@ -21,5 +24,4 @@ test("I can create an incident", async ({ c11n }) => {
   await c11nPage.getByRole("textbox", { name: 'Cost *" / "' }).click();
   await c11nPage.getByRole("textbox", { name: 'Cost *" / "' }).fill("$123");
   await goToNextStep(c11nPage);
-
 });
