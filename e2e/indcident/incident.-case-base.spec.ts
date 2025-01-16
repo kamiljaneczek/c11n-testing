@@ -20,12 +20,7 @@ test("I can create an incident", async ({ c11n }) => {
   await c11nPage.getByTestId("Name:input:control").click();
   await c11nPage.getByTestId("Name:input:control").fill("Mix");
   await c11nPage.getByTestId(":backdrop:").getByRole("button", { name: "Search", exact: true }).click();
-  await c11nPage
-    .getByTestId(":backdrop:")
-    .getByTestId(":fullscreen:")
-    .getByTestId(":form-field:label")
-    .locator("div")
-    .click();
+  await c11nPage.getByTestId(":backdrop:").getByTestId(":fullscreen:").getByTestId(":form-field:label").locator("div").click();
   await c11nPage.getByRole("textbox", { name: 'Cost *" / "' }).click();
   await c11nPage.getByRole("textbox", { name: 'Cost *" / "' }).fill("$123");
   await goToNextStep(c11nPage);

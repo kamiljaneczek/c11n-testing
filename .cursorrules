@@ -1,0 +1,6 @@
+this is a project for testing Pega C11n application. We use playwright for testing.
+Rules:
+- All tests should be in the e2e folder
+- All tests should be in the spec.ts file
+- All tests should be named like example.spec.ts
+- All tests should be named like example.spec.ts
