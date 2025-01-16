@@ -3,7 +3,12 @@ import { mainmenu } from "../data/portal/main-menu";
 
 import { expect } from "@playwright/test";
 import { test } from "./fixtures";
-import { navigateToIncidents } from "../lib/portal";
+import { navigateToLP } from "../lib/portal";
+import { caseWorker } from "../data/users";
+
+test.beforeEach(async ({ c11n }) => {
+  await c11n.loginToPega(caseWorker);
+});
 
 test("Menu is working", async ({ c11n }) => {
   // The page.goto('/') is now automatically handled by the custom fixture
@@ -17,6 +22,6 @@ test("Menu is working", async ({ c11n }) => {
 
 test("I can navigate to Incidents", async ({ c11n }) => {
   const c11nPage = c11n.page;
-  await navigateToIncidents(c11nPage);
+  await navigateToLP(c11nPage, "Incidents");
   await expect(c11nPage.getByRole("heading", { level: 1, name: "Incidents" })).toBeVisible();
 });

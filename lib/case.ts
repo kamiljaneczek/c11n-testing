@@ -1,6 +1,14 @@
 import { Page } from "@playwright/test";
 import { TIncidentCase } from "./types";
 
+/**
+ * This function creates an incident case and returns the case ID.
+ * It uses a promise to wait for the case ID to be received from the API response.
+ * The promise is resolved when the case ID is received, and the case ID is returned.
+ * @param c11nPage - The page object for the C11n application.
+ * @returns The case ID.
+ */
+
 export async function createIncidentCase(c11nPage: Page): Promise<string> {
   let caseId: string | undefined;
 
@@ -32,6 +40,10 @@ export async function createIncidentCase(c11nPage: Page): Promise<string> {
   return caseId;
 }
 
+/**
+ * This function goes to the next step/assignment
+ * @param c11nPage - The page object for the C11n application.
+ */
 export async function goToNextStep(c11nPage: Page) {
   await c11nPage.getByRole("button", { name: "Next" }).click();
 }

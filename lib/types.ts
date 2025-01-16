@@ -1,3 +1,8 @@
+/**
+ * This type is used to represent the response from the API when creating an incident case.
+ * Represents the response from the API when creating an incident case.
+ * This is a simplified version of the response - it only includes the fields that are needed for the tests.
+ */
 export type TIncidentCase = {
   data: {
     caseInfo: {

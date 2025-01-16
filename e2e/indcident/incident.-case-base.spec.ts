@@ -1,6 +1,11 @@
+import { caseWorker } from "../../data/users";
 import { createIncidentCase, goToNextStep } from "../../lib/case";
 
 import { test } from "../fixtures";
+
+test.beforeEach(async ({ c11n }) => {
+  await c11n.loginToPega(caseWorker);
+});
 
 test("I can create an incident", async ({ c11n }) => {
   const c11nPage = c11n.page;
