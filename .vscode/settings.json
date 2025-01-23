@@ -19,7 +19,6 @@
     "**/**/package.json": "${dirname} - Package.json"
   },
 
-  "editor.fontWeight": "normal",
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "eslint.workingDirectories": [{ "mode": "auto" }],
@@ -29,5 +28,12 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  },
+
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "window.zoomLevel": 0
 }

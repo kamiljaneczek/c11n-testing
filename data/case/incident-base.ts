@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { TIncidentCase } from "../../lib/types";
+import { TIncidentCaseData } from "../../lib/types";
 
-export const incidentBaseCase: TIncidentCase = {
+export const incidentBaseCase: TIncidentCaseData = {
   incidentType: "Customer service issue",
   incidentSubType: "Customer service issue",
   productName: "Mix",

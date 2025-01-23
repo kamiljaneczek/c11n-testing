@@ -1,8 +1,8 @@
 import { expect } from "@playwright/test";
-import { acceptPrivacy, loginButton, passwordField, userNameField } from "../lib/login";
-import { test } from "./fixtures";
-import { getTellUsMoreUser } from "../lib/utils";
-import { caseWorker } from "../data/users";
+import { acceptPrivacy, loginButton, passwordField, userNameField } from "../../lib/login";
+import { test } from "../fixtures";
+import { getTellUsMoreUser } from "../../lib/utils";
+import { caseWorker } from "../../data/users";
 
 test.beforeEach(async ({ login }) => {
   await login.openLoginPage();

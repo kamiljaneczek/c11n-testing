@@ -27,3 +27,30 @@ export type TIncidentCase = {
   };
   ID: string;
 };
+
+export type TIncidentCaseData = {
+  incidentType: string;
+  incidentSubType: string;
+  productName: string;
+  cost: number;
+  whatHappened: string;
+  whereHappened: string;
+  whenHappened: Date;
+  contactInfo: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      zip: string;
+      country: string;
+    };
+  };
+  resolutionMethod: string;
+  eligibility: string;
+  customerSentiment: string;
+  NPS: number;
+};

@@ -1,8 +1,8 @@
 //ts-check
 
 import { expect } from "@playwright/test";
-import { test } from "./fixtures";
-import { caseWorker } from "../data/users";
+import { test } from "../fixtures";
+import { caseWorker } from "../../data/users";
 
 test.beforeEach(async ({ c11n }) => {
   await c11n.loginToPega(caseWorker);

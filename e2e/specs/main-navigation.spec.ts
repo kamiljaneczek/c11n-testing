@@ -1,10 +1,10 @@
 //ts-check
-import { mainmenu } from "../data/portal/main-menu";
+import { mainmenu } from "../../data/portal/main-menu";
 
 import { expect } from "@playwright/test";
-import { test } from "./fixtures";
-import { navigateToLP } from "../lib/portal";
-import { caseWorker } from "../data/users";
+import { test } from "../fixtures";
+import { navigateToLP } from "../../lib/portal";
+import { caseWorker } from "../../data/users";
 
 test.beforeEach(async ({ c11n }) => {
   await c11n.loginToPega(caseWorker);

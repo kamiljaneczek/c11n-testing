@@ -4,3 +4,4 @@ Rules:
 - All tests should be in the spec.ts file
 - All tests should be named like example.spec.ts
 - All tests should be named like example.spec.ts
+- I use cucumber for writing tests i plain english
