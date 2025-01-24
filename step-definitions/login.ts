@@ -1,13 +1,15 @@
 import { Given, setDefaultTimeout, Then, When } from "@cucumber/cucumber";
-import { fixture } from "../hooks/page-fixture";
+import { fixture } from "../lib/cucumber/page-fixture";
 import { loginToPega } from "../lib/login";
 import { createIncidentCase } from "../lib/case";
+import { getTellUsMoreUser } from "../lib/utils";
 
 setDefaultTimeout(60 * 1000 * 2);
 
 Given("A User logs in as customer", async function () {
   await fixture.page.goto("https://lab-03764-bos.lab.pega.com/prweb/app/tell-us-more-refrence");
-  await loginToPega(fixture.page, { userName: "test_user@pega.com", password: "install12345!1" });
+  const user = getTellUsMoreUser("CustomerREF@SL");
+  await loginToPega(fixture.page, user);
 });
 
 When("I create a new incident", function () {

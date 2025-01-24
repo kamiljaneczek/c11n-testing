@@ -1,7 +1,7 @@
 import { caseWorker } from "../../data/users";
 import { createIncidentCase, goToNextStep } from "../../lib/case";
 
-import { test } from "../fixtures";
+import { test } from "../../lib/playwright/fixtures";
 
 test.beforeEach(async ({ c11n }) => {
   await c11n.loginToPega(caseWorker);
