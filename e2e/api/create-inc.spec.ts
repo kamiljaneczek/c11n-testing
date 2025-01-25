@@ -34,19 +34,18 @@ const test = base.extend<IncidentFixture>({
 test.describe.serial("Create Incident case related to product so customer receive help to thier issues - API", async () => {
   const caseTypeID = "SL-TellUsMoreRef-Work-Incident";
   const workPool = "SL-TellUsMoreRef-Work";
-  let sharedEncodedPzInskey: string;
+  let incidentPzInsKey: string;
   let eTag: string;
-  let sharedPaymentCaseID: string;
+  let paymentPzInsKey: string;
 
   test("Create Incident case", async ({ request }) => {
     const caseResponse = await createCaseAPI(request, caseTypeID, "", "");
-    sharedEncodedPzInskey = encodeURIComponent(caseResponse.response.data.caseInfo.ID);
+    incidentPzInsKey = encodeURIComponent(caseResponse.response.data.caseInfo.ID);
     eTag = caseResponse.eTag;
     expect(eTag).not.toBe("");
   });
   
   test("Select type and subtype of incident", async ({ request }) => {
-    console.log("Etag: ", eTag);
     const data = JSON.stringify({ 
       "content": { 
         "IncidentType": incidentBaseCase.incidentType, 
@@ -55,7 +54,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
       "pageInstructions": [] 
     });
 
-    const response = await submitCreateScreenFAAPI(request, eTag, sharedEncodedPzInskey, "DetermineCategory", data);
+    const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "DetermineCategory", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
  
@@ -66,14 +65,14 @@ test.describe.serial("Create Incident case related to product so customer receiv
       "content":
         { "Product": { "pyGUID": "5b3d1e3b-65fe-475a-8ae7-15542cd79b3f", "Cost": 121 }, "What": "sda", "Where": "asda", "When": "2025-01-25" }, "pageInstructions": []
     });
-    const response = await submitCreateScreenFAAPI(request, eTag, sharedEncodedPzInskey, "ProductDetials", data);
+    const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "ProductDetials", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
   });
 
     test("Provide customer details", async ({ request }) => {
     const data = JSON.stringify({"content":{"Customer":{"FName":"ghgh","LName":"jghj","EMail":"dfds@o2.pl","PhoneNumber":"+48784621417","Address":{"pyStreet":"sdfsdf","pyCity":"sdfsdf","pyPostalCode":"213234-234","pyCountry":"Poland"}}},"pageInstructions":[]});
-    const response = await submitCreateScreenFAAPI(request, eTag, sharedEncodedPzInskey, "ContactInfo", data);
+    const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "ContactInfo", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
     });
@@ -81,60 +80,60 @@ test.describe.serial("Create Incident case related to product so customer receiv
 
     test("Select desired resolution method", async ({ request }) => {
     const data = JSON.stringify({"content":{"PreferredResolutionMethod":"Refund"},"pageInstructions":[]});
-    const response = await submitCreateScreenFAAPI(request, eTag, sharedEncodedPzInskey, "ResolutionMethod", data);
+    const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "ResolutionMethod", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
      });
 
     test("Review and submit", async ({ request }) => {
     const data = JSON.stringify({"content":{"UserConsent":true,"PrivacyPolicy":true},"pageInstructions":[]});
-    const response = await submitCreateScreenFAAPI(request, eTag, sharedEncodedPzInskey, "Review", data);
+    const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "Review", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
     });
   
   test("Eligibility check", async ({ request }) => {
-      const incidentCase = await openCase(request, sharedEncodedPzInskey);
+      const incidentCase = await openCase(request, incidentPzInsKey);
       eTag = incidentCase.eTag;
       expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{"EligibilityType":"Eligible","OverwriteAssignment":false,"ShallIncreaseUrgency":false},"pageInstructions":[]});
-    await submitEligibilityCheckAPI(request, eTag, sharedEncodedPzInskey, data);
+    await submitEligibilityCheckAPI(request, eTag, incidentPzInsKey, data);
     });
   
   test("Handle ticket", async ({ request }) => {
-            const incidentCase = await openCase(request, sharedEncodedPzInskey);
+            const incidentCase = await openCase(request, incidentPzInsKey);
       eTag = incidentCase.eTag;
       expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{"ResolutionMethod":"Refund"},"pageInstructions":[]});
-    await submitHandleTicketAPI(request, eTag, sharedEncodedPzInskey, data);
+    await submitHandleTicketAPI(request, eTag, incidentPzInsKey, data);
     });
 
   test("Link similar", async ({ request }) => {
-            const incidentCase = await openCase(request, sharedEncodedPzInskey);
+            const incidentCase = await openCase(request, incidentPzInsKey);
     eTag = incidentCase.eTag;
     
       expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-    await submitLinkSimilarAPI(request, eTag, sharedEncodedPzInskey, data);
+    await submitLinkSimilarAPI(request, eTag, incidentPzInsKey, data);
     });
   
   
   test("Dispatch payment", async ({ request }) => {
-      const incidentCase = await openCase(request, sharedEncodedPzInskey);
+      const incidentCase = await openCase(request, incidentPzInsKey);
       eTag = incidentCase.eTag;
       expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-    await submitDispatchPaymentAPI(request, eTag, sharedEncodedPzInskey, data);
-    const paymentCaseID = await getIncidentDescendatsAPI(request, sharedEncodedPzInskey);
-    sharedPaymentCaseID = paymentCaseID.childCaseID;
+    await submitDispatchPaymentAPI(request, eTag, incidentPzInsKey, data);
+    const paymentCaseID = await getIncidentDescendatsAPI(request, incidentPzInsKey);
+    paymentPzInsKey = encodeURIComponent(`${workPool} ${paymentCaseID.childCaseID}`);
     expect(paymentCaseID).not.toBe("");
   });
   
   test("Schedule payment", async ({ request }) => {
-    const encodedPaymentPzInskey = encodeURIComponent(`${workPool} ${sharedPaymentCaseID}`);
+
 
     try {
-    const openCaseResponse = await openCase(request, encodedPaymentPzInskey);
+    const openCaseResponse = await openCase(request, paymentPzInsKey);
       eTag = openCaseResponse.eTag;
       expect(eTag).not.toBe("");
     } catch (error) {
@@ -143,19 +142,19 @@ test.describe.serial("Create Incident case related to product so customer receiv
     }
    
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-    const response = await submitSchedulePaymentAPI(request, eTag, encodedPaymentPzInskey, data);
+    const response = await submitSchedulePaymentAPI(request, eTag, paymentPzInsKey, data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
   }); 
 
   test("Flow up call", async ({ request }) => {
-    const incidentCase = await openCase(request, sharedEncodedPzInskey);
+    const incidentCase = await openCase(request, incidentPzInsKey);
      eTag = incidentCase.eTag;
       expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-     await flowUpCallAPI(request, eTag, sharedEncodedPzInskey, data);
+     await flowUpCallAPI(request, eTag, incidentPzInsKey, data);
 
-    const incidentStatus = await getIncidentStatusAPI(request, sharedEncodedPzInskey);
+    const incidentStatus = await getIncidentStatusAPI(request, incidentPzInsKey);
     expect(incidentStatus.status).toBe("Resolved-Completed");
   });
 });

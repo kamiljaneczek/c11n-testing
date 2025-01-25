@@ -228,7 +228,6 @@ export async function openCase(request: APIRequestContext, pzInskey: string): Pr
 export async function flowUpCallAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
 
-  console.log("flowUpCallURL(pzInskey): ", flowUpCallURL(pzInskey));
 
   const response = await request.patch(flowUpCallURL(pzInskey), {
     data: data,
