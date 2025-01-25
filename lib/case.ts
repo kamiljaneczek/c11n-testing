@@ -9,7 +9,7 @@ import { TIncidentCase } from "./types";
  * @returns The case ID.
  */
 
-export async function createIncidentCase(c11nPage: Page): Promise<string> {
+export async function createIncidentCaseBackOffice(c11nPage: Page): Promise<string> {
   let caseId: string | undefined;
 
   // Create a promise that will resolve when we get the case ID
@@ -29,7 +29,7 @@ export async function createIncidentCase(c11nPage: Page): Promise<string> {
 
   // Trigger the request
   await c11nPage.getByRole("button", { name: "Create" }).click();
-  await c11nPage.getByTestId(":menu:").getByLabel("Incident").click();
+
 
   // Wait for the case ID to be received
   caseId = await caseIdPromise;
@@ -39,6 +39,7 @@ export async function createIncidentCase(c11nPage: Page): Promise<string> {
   }
   return caseId;
 }
+
 
 export async function createIncidentCaseSelfService(c11nPage: Page): Promise<string> {
   let caseId: string | undefined;
@@ -59,7 +60,7 @@ export async function createIncidentCaseSelfService(c11nPage: Page): Promise<str
   });
 
   // Trigger the request
-  await c11nPage.getByRole("button", { name: "Incident" }).click();
+  await c11nPage.locator('//button[.//span/span[text()="Incident"]]').click();
 
   // Wait for the case ID to be received
   caseId = await caseIdPromise;

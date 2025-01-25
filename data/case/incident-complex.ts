@@ -23,7 +23,7 @@ type TIncidentComplexCase = {
   cost: number;
   whatHappened: string;
   whereHappened: string;
-  whenHappened: Date;
+  whenHappened: string;
   contactInfo: TContactInfo;
   resolutionMethod: string;
   eligibility: string;
@@ -38,7 +38,7 @@ export const incidentComplexCase: TIncidentComplexCase = {
   cost: faker.number.int({ min: 100, max: 1000 }),
   whatHappened: faker.lorem.paragraph(),
   whereHappened: faker.location.city(),
-  whenHappened: faker.date.recent(),
+  whenHappened: faker.date.recent().toISOString(),
   contactInfo: {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
