@@ -2,8 +2,8 @@ import { faker } from "@faker-js/faker";
 import { TIncidentCaseData } from "../../lib/types";
 
 export const incidentBaseCase: TIncidentCaseData = {
-  incidentType: "Customer service issue",
-  incidentSubType: "Customer service issue",
+  incidentType: "Product faulty or unsafe",
+  incidentSubType: "Product not as described",
   productName: "Mix",
   cost: faker.number.int({ min: 100, max: 1000 }),
   whatHappened: faker.lorem.paragraph(),

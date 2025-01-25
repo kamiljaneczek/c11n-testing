@@ -59,7 +59,7 @@ export async function createIncidentCaseSelfService(c11nPage: Page): Promise<str
   });
 
   // Trigger the request
-  await c11nPage.getByRole('button', { name: 'Incident' }).click();
+  await c11nPage.getByRole("button", { name: "Incident" }).click();
 
   // Wait for the case ID to be received
   caseId = await caseIdPromise;
@@ -69,7 +69,6 @@ export async function createIncidentCaseSelfService(c11nPage: Page): Promise<str
   }
   return caseId;
 }
-
 
 /**
  * This function goes to the next step/assignment

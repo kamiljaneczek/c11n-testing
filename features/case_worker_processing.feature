@@ -1,5 +1,5 @@
-# case_worker_resolution.feature
-Feature: Case Worker Incident Resolution
+# case_worker_processing.feature
+Feature: Case Worker Incident Processing
   As a case worker
   I want to process and resolve incidents
   So that customers receive appropriate solutions

@@ -1,6 +1,6 @@
 import { test as base, Page } from "@playwright/test";
-import { loginToPega } from "../lib/login";
-import { getTellUsMoreUser } from "../lib/utils";
+import { loginToPega } from "../../lib/login";
+import { getTellUsMoreUser } from "../../lib/utils";
 
 type C11nFixture = {
   login: LoginPage;

@@ -2,7 +2,7 @@
 import { mainmenu } from "../../data/portal/main-menu";
 
 import { expect } from "@playwright/test";
-import { test } from "../fixtures";
+import { test } from "../../lib/playwright/fixtures";
 import { navigateToLP } from "../../lib/portal";
 import { caseWorker } from "../../data/users";
 

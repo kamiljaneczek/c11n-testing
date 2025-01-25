@@ -1,3 +1,4 @@
+# dispatcher_incident_processing.feature
 Feature: Dispatcher Incident Processing
   As a dispatcher
   I want to assess incident eligibility
@@ -11,9 +12,8 @@ Feature: Dispatcher Incident Processing
     When I open the incident for eligibility check
     Then I should see the incident details in read-only mode
     When I set eligibility type to "Eligible"
-    And I select "Hardware" as dispatch queue
     And I submit the eligibility decision
-    Then the incident should be routed to the Hardware work queue
+    Then the incident should be routed to the Product work queue
     And the incident status should be updated to "In Progress"
 
   Scenario: Reject spam incident

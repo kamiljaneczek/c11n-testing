@@ -35,6 +35,7 @@ module.exports = [
       "**/.eslintrc.js",
       "prettier.config.js",
       "config/cucumber.js",
+      ".cursorrules",
     ],
   },
 ];

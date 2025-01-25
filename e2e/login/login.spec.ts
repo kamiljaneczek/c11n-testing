@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { acceptPrivacy, loginButton, passwordField, userNameField } from "../../lib/login";
-import { test } from "../fixtures";
+import { test } from "../../lib/playwright/fixtures";
 import { getTellUsMoreUser } from "../../lib/utils";
 import { caseWorker } from "../../data/users";
 

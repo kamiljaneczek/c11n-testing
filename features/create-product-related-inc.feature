@@ -1,15 +1,16 @@
-# customer_incident_submission.feature
-Feature: Customer Incident Submission
+# create-product-related-inc.feature
+Feature: Customer Incident Submission (Product related)
   As a customer
-  I want to submit an incident report
-  So that I can get help with product or service issues
+  I want to submit an incident case related to product
+  So that I can get help with product issues
 
   Background:
     Given I am logged into the customer portal
-    And I am on the new incident submission page
+    And I am on the home page
 
   Scenario: Submit product-related incident
-    When I select "Product faulty or unsafe" as the Incident Type
+    When I click on Incident tile
+    And I select "Product faulty or unsafe" as the Incident Type
     And I select "Broken on arrival" as the Incident SubType
     And I fill in the product details:
       | Field        | Value                     |

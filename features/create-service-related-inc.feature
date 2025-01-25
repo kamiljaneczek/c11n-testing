@@ -1,7 +1,7 @@
-# service_incident_submission.feature
-Feature: Customer Service Incident Submission
+# create-service-related-inc.feature
+Feature: Customer Incident Submission (Service related)
   As a customer
-  I want to report a service-related issue
+  I want to submit an incident case related to service
   So that I can get resolution for service problems
 
   Scenario: Submit service-related incident
@@ -21,4 +21,4 @@ Feature: Customer Service Incident Submission
     When I submit the incident
     Then I should see a confirmation message
     And the incident should be routed to the service complaints queue
-# dispatcher_incident_processing.feature
+

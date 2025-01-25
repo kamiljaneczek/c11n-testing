@@ -1,6 +1,3 @@
-features/asdasd.feature:11:20
-features/fit.feature:10:19
-features/generic copy.feature:7
-features/generic.feature:11
-features/incident.feature:3
-features/sdasd.feature:6
+features/create-product-related-inc.feature:11
+features/create-service-related-inc.feature:7
+features/incident_follow_up.feature:7
