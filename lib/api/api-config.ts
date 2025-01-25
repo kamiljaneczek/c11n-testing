@@ -16,13 +16,13 @@ export function submitHandleTicketURL(pzInskey: string): string {
 }
 
 export function submitLinkSimilarURL(pzInskey: string): string {
-  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKBASKET%20${pzInskey}!PROCESSINCIDENT/actions/LinkSimilar?viewType=form`;
+  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKLIST%20${pzInskey}!PROCESSINCIDENT/actions/LinkSimilar?viewType=form`;
 }
 
 
 
 export function getDescendatsURL(pzInskey: string): string {
-  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/cases/${pzInskey}/descendents`;
+  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/cases/${pzInskey}/descendants`;
 }
 
 
@@ -31,7 +31,7 @@ export function submitSchedulePaymentURL(pzInskey: string): string {
 }
 
 export function submitDispatchPaymentURL(pzInskey: string): string {
-  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKLIST%20${pzInskey}!PAYMENT/actions/DispatchPayment?viewType=form`;
+  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKBASKET%20${pzInskey}!PAYMENT/actions/DispatchPayment?viewType=form`;
 }
 
 export function openCaseURL(pzInskey: string): string {
@@ -39,5 +39,5 @@ export function openCaseURL(pzInskey: string): string {
 }
 
 export function flowUpCallURL(pzInskey: string): string {
-  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKLIST%20${pzInskey}!FOLLOWUPCALL/actions/FollowupCall?viewType=form`;
+  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKBASKET%20${pzInskey}!FOLLOWUPCALL/actions/FollowupCall?viewType=form`;
 }

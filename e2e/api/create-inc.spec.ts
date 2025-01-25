@@ -1,5 +1,5 @@
 import { test as base, expect } from "@playwright/test";
-import { createCaseAPI, flowUpCallAPI, getIncidentDescendatsAPI, getIncidentStatusAPI, openCase, submitCreateScreenFAAPI, submitDispatchPaymentAPI, submitEligibilityCheckAPI, submitLinkSimilarAPI, submitSchedulePaymentAPI } from "../../lib/api/incident";
+import { createCaseAPI, flowUpCallAPI, getIncidentDescendatsAPI, getIncidentStatusAPI, openCase, submitCreateScreenFAAPI, submitDispatchPaymentAPI, submitEligibilityCheckAPI, submitHandleTicketAPI, submitLinkSimilarAPI, submitSchedulePaymentAPI } from "../../lib/api/incident";
 import { incidentBaseCase } from "../../data/case/incident-base";
 
 // Define the fixture type
@@ -25,28 +25,28 @@ const test = base.extend<IncidentFixture>({
   eTag: [async ({}, use) => {
     await use('');
   }, { scope: 'test' }],
+  paymentCaseID: [async ({}, use) => {
+    await use('');
+  }, { scope: 'test' }],
 });
 
 // Change to test.describe.serial to run tests in sequence
 test.describe.serial("Create Incident case related to product so customer receive help to thier issues - API", async () => {
   const caseTypeID = "SL-TellUsMoreRef-Work-Incident";
   const workPool = "SL-TellUsMoreRef-Work";
-  let sharedCaseID: string;
-  let sharedPzInskey: string;
   let sharedEncodedPzInskey: string;
   let eTag: string;
   let sharedPaymentCaseID: string;
 
-  test("Create Incident case - API", async ({ request }) => {
+  test("Create Incident case", async ({ request }) => {
     const caseResponse = await createCaseAPI(request, caseTypeID, "", "");
-    sharedPzInskey = caseResponse.response.data.caseInfo.ID;
-    sharedCaseID  = sharedPzInskey.split(" ")[1];
-    sharedEncodedPzInskey = encodeURIComponent(sharedPzInskey);
+    sharedEncodedPzInskey = encodeURIComponent(caseResponse.response.data.caseInfo.ID);
     eTag = caseResponse.eTag;
     expect(eTag).not.toBe("");
   });
   
   test("Select type and subtype of incident", async ({ request }) => {
+    console.log("Etag: ", eTag);
     const data = JSON.stringify({ 
       "content": { 
         "IncidentType": incidentBaseCase.incidentType, 
@@ -84,7 +84,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
     const response = await submitCreateScreenFAAPI(request, eTag, sharedEncodedPzInskey, "ResolutionMethod", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
-  });
+     });
 
     test("Review and submit", async ({ request }) => {
     const data = JSON.stringify({"content":{"UserConsent":true,"PrivacyPolicy":true},"pageInstructions":[]});
@@ -93,48 +93,55 @@ test.describe.serial("Create Incident case related to product so customer receiv
     expect(eTag).not.toBe("");
     });
   
-    test("Eligibility check", async ({ request }) => {
+  test("Eligibility check", async ({ request }) => {
+      const incidentCase = await openCase(request, sharedEncodedPzInskey);
+      eTag = incidentCase.eTag;
+      expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{"EligibilityType":"Eligible","OverwriteAssignment":false,"ShallIncreaseUrgency":false},"pageInstructions":[]});
-    const response = await submitEligibilityCheckAPI(request, eTag, sharedEncodedPzInskey, data);
-    eTag = response.eTag;
-    expect(eTag).not.toBe("");
+    await submitEligibilityCheckAPI(request, eTag, sharedEncodedPzInskey, data);
     });
   
-    test("Handle ticket", async ({ request }) => {
+  test("Handle ticket", async ({ request }) => {
+            const incidentCase = await openCase(request, sharedEncodedPzInskey);
+      eTag = incidentCase.eTag;
+      expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{"ResolutionMethod":"Refund"},"pageInstructions":[]});
-    const response = await submitEligibilityCheckAPI(request, eTag, sharedEncodedPzInskey, data);
-    eTag = response.eTag;
-    expect(eTag).not.toBe("");
+    await submitHandleTicketAPI(request, eTag, sharedEncodedPzInskey, data);
     });
 
-    test("Link similar", async ({ request }) => {
+  test("Link similar", async ({ request }) => {
+            const incidentCase = await openCase(request, sharedEncodedPzInskey);
+    eTag = incidentCase.eTag;
+    
+      expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-    const response = await submitLinkSimilarAPI(request, eTag, sharedEncodedPzInskey, data);
-    eTag = response.eTag;
-    expect(eTag).not.toBe("");
+    await submitLinkSimilarAPI(request, eTag, sharedEncodedPzInskey, data);
     });
   
   
   test("Dispatch payment", async ({ request }) => {
+      const incidentCase = await openCase(request, sharedEncodedPzInskey);
+      eTag = incidentCase.eTag;
+      expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-    const response = await submitDispatchPaymentAPI(request, eTag, sharedEncodedPzInskey, data);
-    eTag = response.eTag;
-    expect(eTag).not.toBe("");
+    await submitDispatchPaymentAPI(request, eTag, sharedEncodedPzInskey, data);
     const paymentCaseID = await getIncidentDescendatsAPI(request, sharedEncodedPzInskey);
     sharedPaymentCaseID = paymentCaseID.childCaseID;
     expect(paymentCaseID).not.toBe("");
   });
   
   test("Schedule payment", async ({ request }) => {
+    const encodedPaymentPzInskey = encodeURIComponent(`${workPool} ${sharedPaymentCaseID}`);
+
     try {
-    const openCaseResponse = await openCase(request, sharedPaymentCaseID);
+    const openCaseResponse = await openCase(request, encodedPaymentPzInskey);
       eTag = openCaseResponse.eTag;
       expect(eTag).not.toBe("");
     } catch (error) {
       console.error(error);
       throw error;
     }
-    const encodedPaymentPzInskey = encodeURIComponent(`${workPool} ${sharedPaymentCaseID}`);
+   
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
     const response = await submitSchedulePaymentAPI(request, eTag, encodedPaymentPzInskey, data);
     eTag = response.eTag;
@@ -142,18 +149,17 @@ test.describe.serial("Create Incident case related to product so customer receiv
   }); 
 
   test("Flow up call", async ({ request }) => {
-    const openCaseResponse = await openCase(request, sharedCaseID);
-    eTag = openCaseResponse.eTag;
-    expect(eTag).not.toBe("");
+    const incidentCase = await openCase(request, sharedEncodedPzInskey);
+     eTag = incidentCase.eTag;
+      expect(eTag).not.toBe("");
     const data = JSON.stringify({"content":{},"pageInstructions":[]});
-    const response = await flowUpCallAPI(request, eTag, sharedCaseID, data);
-    eTag = response.eTag;
-    expect(eTag).not.toBe("");
+     await flowUpCallAPI(request, eTag, sharedEncodedPzInskey, data);
 
-    const incidentStatus = await getIncidentStatusAPI(request, sharedCaseID);
-    expect(incidentStatus).toBe("Resolved-Complete");
+    const incidentStatus = await getIncidentStatusAPI(request, sharedEncodedPzInskey);
+    expect(incidentStatus.status).toBe("Resolved-Completed");
   });
 });
+
 
 
 

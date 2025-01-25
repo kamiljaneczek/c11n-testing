@@ -28,11 +28,15 @@ export async function createCaseAPI(request: APIRequestContext, caseTypeID: stri
         authorization: `Bearer ${oauth2Token}`.trim(),
       },
     });
+    expect(response.headers()["etag"]).not.toBe("");
     const responseBody: CaseCreateResponseData = await response.json();
     expect(response.status()).toBe(201);
     expect(responseBody.data.caseInfo.ID).toBeDefined();
-    expect(responseBody.data.caseInfo.ID).not.toBe("");
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+ 
+    expect(response.headers()["etag"]).not.toBe("");
+
+  
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -59,7 +63,7 @@ export async function submitCreateScreenFAAPI(request: APIRequestContext, eTag: 
     const responseBody = await response.json();
     expect(response.status()).toBe(200);
 
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -85,7 +89,7 @@ export async function submitEligibilityCheckAPI(request: APIRequestContext, eTag
     });
     const responseBody = await response.json() ;
     expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -108,7 +112,7 @@ export async function submitHandleTicketAPI(request: APIRequestContext, eTag: st
     });
     const responseBody = await response.json() ;
     expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -130,7 +134,7 @@ export async function submitLinkSimilarAPI(request: APIRequestContext, eTag: str
     });
     const responseBody = await response.json() ;
     expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -151,7 +155,7 @@ export async function submitDispatchPaymentAPI(request: APIRequestContext, eTag:
     });
     const responseBody = await response.json() ;
     expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -196,7 +200,7 @@ export async function submitSchedulePaymentAPI(request: APIRequestContext, eTag:
     });
     const responseBody = await response.json() ;
     expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
     throw error;
@@ -217,12 +221,14 @@ export async function openCase(request: APIRequestContext, pzInskey: string): Pr
     });
     const responseBody = await response.json();
     expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["Etag"] };
+    return { response: responseBody, eTag: response.headers()["etag"] };
 }
 
 
 export async function flowUpCallAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
+
+  console.log("flowUpCallURL(pzInskey): ", flowUpCallURL(pzInskey));
 
   const response = await request.patch(flowUpCallURL(pzInskey), {
     data: data,
@@ -235,7 +241,7 @@ export async function flowUpCallAPI(request: APIRequestContext, eTag: string, pz
   });
   const responseBody = await response.json() ;
   expect(response.status()).toBe(200);
-  return { response: responseBody, eTag: response.headers()["Etag"] };
+  return { response: responseBody, eTag: response.headers()["etag"] };
 }
 
 
