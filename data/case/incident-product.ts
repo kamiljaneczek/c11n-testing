@@ -1,19 +1,20 @@
 import { faker } from "@faker-js/faker";
-import { TIncidentCaseData } from "../../lib/types";
+import { TIncidentProductCaseTestData } from "../../lib/types";
 
-export const incidentBaseCase: TIncidentCaseData = {
+export const incidentProductCase: Partial<TIncidentProductCaseTestData> = {
   incidentType: "Product faulty or unsafe",
   incidentSubType: "Product not as described",
   productName: "Mix",
-  cost: faker.number.int({ min: 100, max: 1000 }),
-  whatHappened: faker.lorem.paragraph(),
+  productGUID: "5b3d1e3b-65fe-475a-8ae7-15542cd79b3f",
+  cost: faker.number.int({ min: 10, max: 30 }),
+  whatHappened: faker.lorem.sentence(),
   whereHappened: faker.location.city(),
-  whenHappened: faker.date.recent(),
+  whenHappened: faker.date.recent().toISOString().split("T")[0],
   contactInfo: {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    phone: "1 (231) 231-2367",
+    phone: faker.number.int({ min: 100000000, max: 999999999 }).toString(),
     address: {
       street: faker.location.streetAddress(),
       city: faker.location.city(),
@@ -22,8 +23,11 @@ export const incidentBaseCase: TIncidentCaseData = {
       country: faker.location.country(),
     },
   },
-  resolutionMethod: "Replacement",
+  resolutionMethod: "Refund",
+  desiredResolution: "Refund",
   eligibility: "Eligible",
+  paymentBroker: "Paypal",
   customerSentiment: "Positive",
-  NPS: faker.number.int({ min: 1, max: 10 }),
+  NPS: faker.number.int({ min: 7, max: 10 }),
+  breakAfter: "NONE",
 };

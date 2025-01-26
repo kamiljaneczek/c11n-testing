@@ -1,0 +1,30 @@
+{
+  "incidentType": "Product faulty or unsafe",
+  "incidentSubType": "Product not as described",
+  "productName": "Mix",
+  "productGUID": "5b3d1e3b-65fe-475a-8ae7-15542cd79b3f",
+  "cost": "$random",
+  "whatHappened": "$random",
+  "whereHappened": "$random",
+  "whenHappened": "$random",
+  "contactInfo": {
+    "firstName": "$random",
+    "lastName": "$random",
+    "email": "$random",
+    "phone": "$random",
+    "address": {
+      "street": "$random",
+      "city": "$random",
+      "state": "$random",
+      "zip": "$random",
+      "country": "$random"
+    }
+  },
+  "resolutionMethod": "Refund",
+  "desiredResolution": "Refund",
+  "eligibility": "Eligible",
+  "paymentBroker": "Paypal",
+  "customerSentiment": "Positive",
+  "NPS": "$random",
+  "breakAfter": "Dispatch"
+}

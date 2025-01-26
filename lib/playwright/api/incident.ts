@@ -1,8 +1,20 @@
 import { expect } from "@playwright/test";
-import { authenticateAPI } from "../utils";
-import { createCaseURL,  flowUpCallURL, getDescendatsURL, openCaseURL, submitCreateScreenFAURL, submitDispatchPaymentURL, submitEligibilityCheckURL, submitHandleTicketURL, submitLinkSimilarURL, submitSchedulePaymentURL } from "./api-config";
+import { authenticateAPI } from "../../utils";
+import {
+  createCaseURL,
+  flowUpCallURL,
+  getDescendatsURL,
+  openCaseURL,
+  submitCreateScreenFAURL,
+  submitDispatchPaymentURL,
+  submitEligibilityCheckURL,
+  submitHandleTicketURL,
+  submitLinkSimilarURL,
+  submitManagerApprovalURL,
+  submitSchedulePaymentURL,
+} from "./api-config";
 import { APIRequestContext } from "@playwright/test";
-import { CaseCreateResponseData } from "../../e2e/api/types";
+import { CaseCreateResponseData } from "../../types";
 
 
 export type createCaseAPIResponse = {
@@ -32,10 +44,9 @@ export async function createCaseAPI(request: APIRequestContext, caseTypeID: stri
     const responseBody: CaseCreateResponseData = await response.json();
     expect(response.status()).toBe(201);
     expect(responseBody.data.caseInfo.ID).toBeDefined();
- 
+
     expect(response.headers()["etag"]).not.toBe("");
 
-  
     return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
     console.error(error);
@@ -87,7 +98,7 @@ export async function submitEligibilityCheckAPI(request: APIRequestContext, eTag
         "if-match": eTag,
       },
     });
-    const responseBody = await response.json() ;
+    const responseBody = await response.json();
     expect(response.status()).toBe(200);
     return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
@@ -95,13 +106,11 @@ export async function submitEligibilityCheckAPI(request: APIRequestContext, eTag
     throw error;
   }
 }
-
-
 
 export async function submitHandleTicketAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
   try {
-        const response = await request.patch(submitHandleTicketURL(pzInskey), {
+    const response = await request.patch(submitHandleTicketURL(pzInskey), {
       data: data,
       headers: {
         "content-type": "application/json",
@@ -110,7 +119,28 @@ export async function submitHandleTicketAPI(request: APIRequestContext, eTag: st
         "if-match": eTag,
       },
     });
-    const responseBody = await response.json() ;
+    const responseBody = await response.json();
+    expect(response.status()).toBe(200);
+    return { response: responseBody, eTag: response.headers()["etag"] };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function submitLinkSimilarAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
+  const oauth2Token = await authenticateAPI();
+  try {
+    const response = await request.patch(submitLinkSimilarURL(pzInskey), {
+      data: data,
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+        authorization: `Bearer ${oauth2Token}`.trim(),
+        "if-match": eTag,
+      },
+    });
+    const responseBody = await response.json();
     expect(response.status()).toBe(200);
     return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
@@ -120,10 +150,10 @@ export async function submitHandleTicketAPI(request: APIRequestContext, eTag: st
 }
 
 
-export async function submitLinkSimilarAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
+export async function submiManagerApprovalAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
   try {
-        const response = await request.patch(submitLinkSimilarURL(pzInskey), {
+    const response = await request.patch(submitManagerApprovalURL(pzInskey), {
       data: data,
       headers: {
         "content-type": "application/json",
@@ -132,7 +162,7 @@ export async function submitLinkSimilarAPI(request: APIRequestContext, eTag: str
         "if-match": eTag,
       },
     });
-    const responseBody = await response.json() ;
+    const responseBody = await response.json();
     expect(response.status()).toBe(200);
     return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
@@ -153,7 +183,7 @@ export async function submitDispatchPaymentAPI(request: APIRequestContext, eTag:
         "if-match": eTag,
       },
     });
-    const responseBody = await response.json() ;
+    const responseBody = await response.json();
     expect(response.status()).toBe(200);
     return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
@@ -177,14 +207,12 @@ export async function getIncidentDescendatsAPI(request: APIRequestContext, pzIns
     const responseBody = await response.json();
     const childCaseID = responseBody.childCases[0].businessID;
     expect(response.status()).toBe(200);
-    return {  childCaseID: childCaseID };
+    return { childCaseID: childCaseID };
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-
-
 
 export async function submitSchedulePaymentAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
@@ -198,7 +226,7 @@ export async function submitSchedulePaymentAPI(request: APIRequestContext, eTag:
         "if-match": eTag,
       },
     });
-    const responseBody = await response.json() ;
+    const responseBody = await response.json();
     expect(response.status()).toBe(200);
     return { response: responseBody, eTag: response.headers()["etag"] };
   } catch (error) {
@@ -213,21 +241,19 @@ export type openCaseAPIResponse = {
 };
 
 export async function openCase(request: APIRequestContext, pzInskey: string): Promise<openCaseAPIResponse> {
-    const oauth2Token = await authenticateAPI();
-    const response = await request.get(openCaseURL(pzInskey), {
-      headers: {
-        authorization: `Bearer ${oauth2Token}`.trim(),  
-      },
-    });
-    const responseBody = await response.json();
-    expect(response.status()).toBe(200);
-    return { response: responseBody, eTag: response.headers()["etag"] };
+  const oauth2Token = await authenticateAPI();
+  const response = await request.get(openCaseURL(pzInskey), {
+    headers: {
+      authorization: `Bearer ${oauth2Token}`.trim(),
+    },
+  });
+  const responseBody = await response.json();
+  expect(response.status()).toBe(200);
+  return { response: responseBody, eTag: response.headers()["etag"] };
 }
-
 
 export async function flowUpCallAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
-
 
   const response = await request.patch(flowUpCallURL(pzInskey), {
     data: data,
@@ -238,11 +264,10 @@ export async function flowUpCallAPI(request: APIRequestContext, eTag: string, pz
       "if-match": eTag,
     },
   });
-  const responseBody = await response.json() ;
+  const responseBody = await response.json();
   expect(response.status()).toBe(200);
   return { response: responseBody, eTag: response.headers()["etag"] };
 }
-
 
 export type getIncidentStatusData = {
   response: {
@@ -260,7 +285,7 @@ export type getIncidentStatusAPIResponse = {
 };
 
 export async function getIncidentStatusAPI(request: APIRequestContext, pzInskey: string): Promise<getIncidentStatusAPIResponse> {
-  const openCaseResponse = await openCase(request, pzInskey) as getIncidentStatusData;
+  const openCaseResponse = (await openCase(request, pzInskey)) as getIncidentStatusData;
   const status = openCaseResponse.response.data.caseInfo.content.pyStatusWork;
   return { status: status };
 }

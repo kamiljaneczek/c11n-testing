@@ -6,7 +6,6 @@ export function submitCreateScreenFAURL(pzInskey: string, action: string) {
   return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKLIST%20${pzInskey}!CREATEFORM_DEFAULT/actions/${action}?viewType=page`;
 }
 
-
 export function submitEligibilityCheckURL(pzInskey: string): string {
   return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKBASKET%20${pzInskey}!DISPATCH_FLOW/actions/EC?viewType=form`;
 }
@@ -19,12 +18,9 @@ export function submitLinkSimilarURL(pzInskey: string): string {
   return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKLIST%20${pzInskey}!PROCESSINCIDENT/actions/LinkSimilar?viewType=form`;
 }
 
-
-
 export function getDescendatsURL(pzInskey: string): string {
   return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/cases/${pzInskey}/descendants`;
 }
-
 
 export function submitSchedulePaymentURL(pzInskey: string): string {
   return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKLIST%20${pzInskey}!PROCESS_FLOW/actions/SchedulePayment?viewType=form`;
@@ -32,6 +28,10 @@ export function submitSchedulePaymentURL(pzInskey: string): string {
 
 export function submitDispatchPaymentURL(pzInskey: string): string {
   return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKBASKET%20${pzInskey}!PAYMENT/actions/DispatchPayment?viewType=form`;
+}
+
+export function submitManagerApprovalURL(pzInskey: string): string {
+  return `${process.env.BASE_URL}app/${process.env.APP_NAME}/api/application/v2/assignments/ASSIGN-WORKBASKET%20${pzInskey}!PYCASCADINGGETAPPROVAL/actions/pyApproval?viewType=form`;
 }
 
 export function openCaseURL(pzInskey: string): string {

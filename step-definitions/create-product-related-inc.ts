@@ -1,15 +1,29 @@
 import { Given, When, Then, DataTable } from "@cucumber/cucumber";
+import { fixture } from "../lib/cucumber/page-fixture";
+import { customer } from "../data/users";
+import { expect } from "@playwright/test";
+import { getTellUsMoreUser } from "../lib/utils";
+import { loginToPega } from "../lib/login";
 
-Given(`I am logged into the customer portal`, () => {
+
+ 
+Given(`I am logged into the customer portal`, async () => {
   // [Given] Sets up the initial state of the system.
+  const user = getTellUsMoreUser(customer);
+  await fixture.page.goto(`${process.env.BASE_URL}`);
+  await loginToPega(fixture.page, user);
+
+  
 });
 
-Given(`I am on the home page`, () => {
+Given(`I am on the home page`, async () => {
   // [Given] Sets up the initial state of the system.
+  await expect(fixture.page).toHaveTitle(/Tell Us More/);
 });
 
 When(`I click on Incident tile`, () => {
   // [When] Describes the action or event that triggers the scenario.
+  fixture.page.getByRole("link", { name: "Incident" }).click();
 });
 
 When(`I select {string} as the Incident Type`, (IncidentType: string) => {

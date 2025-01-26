@@ -10,7 +10,7 @@ module.exports = {
     requireModule: ["ts-node/register"],
     format: ["progress-bar", "html:test-results/cucumber-report.html", "json:test-results/cucumber-report.json", "rerun:@rerun.txt"],
     parallel: 1,
-    timeout: 6000,
+    timeout: 8000,
   },
   rerun: {
     formatOptions: {

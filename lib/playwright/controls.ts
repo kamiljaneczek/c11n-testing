@@ -8,6 +8,20 @@ export async function fillInput(page: Page, inputTestID: string, value: string) 
   await page.getByTestId(`${inputTestID}:input:control`).click();
   await page.getByTestId(`${inputTestID}:input:control`).fill(value);
 }
+export async function fillTextArea(page: Page, inputTestID: string, value: string) {
+  await page.getByTestId(`${inputTestID}:text-area:control`).click();
+  await page.getByTestId(`${inputTestID}:text-area:control`).fill(value);
+}
+
+export async function fillCurrencyInput(page: Page, inputTestID: string, value: string) {
+  await page.getByTestId(`${inputTestID}:currency-input:control`).click();
+  await page.getByTestId(`${inputTestID}:currency-input:control`).fill(value);
+}
+
+export async function fillDateInput(page: Page, inputTestID: string, value: string) {
+  await page.getByTestId(`${inputTestID}`).click();
+  await page.getByTestId(`${inputTestID}`).fill(value);
+}
 
 export async function clickButton(page: Page, buttonTestID: string) {
   await page.getByTestId(`${buttonTestID}:button:control`).click();

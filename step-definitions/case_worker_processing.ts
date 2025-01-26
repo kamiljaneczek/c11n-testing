@@ -1,6 +1,8 @@
 import { Given, When, Then, DataTable } from "@cucumber/cucumber";
+import { fixture } from "../lib/cucumber/page-fixture";
 
 Given(`I am logged in as a case worker`, () => {
+ 
   // [Given] Sets up the initial state of the system.
 });
 

@@ -30,7 +30,6 @@ export async function createIncidentCaseBackOffice(c11nPage: Page): Promise<stri
   // Trigger the request
   await c11nPage.getByRole("button", { name: "Create" }).click();
 
-
   // Wait for the case ID to be received
   caseId = await caseIdPromise;
 
@@ -39,7 +38,6 @@ export async function createIncidentCaseBackOffice(c11nPage: Page): Promise<stri
   }
   return caseId;
 }
-
 
 export async function createIncidentCaseSelfService(c11nPage: Page): Promise<string> {
   let caseId: string | undefined;

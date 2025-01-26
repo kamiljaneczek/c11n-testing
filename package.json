@@ -12,14 +12,15 @@
     "lint": "pnpm dlx eslint",
     "format": "prettier --write .",
     "codegen": "playwright codegen",
-    "cucumber": "cucumber-js features/**/*.feature --require world/custom-world.ts --require step-definitions/**/*.ts --require hooks/**/*.ts  --require-module ts-node/register",
-    "cucu": "cross-env ENV=prod FORCE_COLOR=1 cucumber-js --config=config/cucumber.js || true",
-    "cucu-dr": "cross-env ENV=prod FORCE_COLOR=1 cucumber-js --config=config/cucumber.js --dry-run"
+    "cucumber:bkp": "cucumber-js features/**/*.feature --require world/custom-world.ts --require step-definitions/**/*.ts --require hooks/**/*.ts  --require-module ts-node/register",
+    "cucumber": "cross-env ENV=prod FORCE_COLOR=1 cucumber-js --config=config/cucumber.js || true",
+    "test-runner": "ts-node test_runner/cli.ts"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.2.0",
     "@playwright/test": "^1.49.1",
     "@types/cucumber": "^7.0.3",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^22.10.6",
     "cucumber-html-reporter": "^7.2.0"
   },
@@ -36,6 +37,7 @@
     "eslint-plugin-prettier": "^5.2.2",
     "eslint-plugin-unused-imports": "^4.1.4",
     "fs-extra": "^11.3.0",
+    "inquirer": "^12.3.2",
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
