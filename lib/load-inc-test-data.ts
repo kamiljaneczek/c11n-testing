@@ -7,7 +7,7 @@ import * as path from "path";
 export function loadIncidentProductData(filename: string, breakAfter: string): TIncidentProduct {
   const jsonPath = path.join(process.cwd(), "data", "case", `${filename}.json`);
   const jsonData = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
-  
+
   // Replace $random values with generated data
   const processedData = {
     ...jsonData,
@@ -39,14 +39,12 @@ export function loadIncidentProductData(filename: string, breakAfter: string): T
   const parsedData = incidentProductSchema.parse(processedData);
   // Validate the processed data
   return parsedData;
-} 
-
+}
 
 export function loadIncidentServiceData(filename: string, breakAfter: string): TIncidentService {
   const jsonPath = path.join(process.cwd(), "data", "case", `${filename}.json`);
   const jsonData = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 
-  
   // Replace $random values with generated data
   const processedData = {
     ...jsonData,
@@ -77,5 +75,4 @@ export function loadIncidentServiceData(filename: string, breakAfter: string): T
   const parsedData = incidentServiceSchema.parse(processedData);
   // Validate the processed data
   return parsedData;
-  
 }

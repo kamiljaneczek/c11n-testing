@@ -35,4 +35,4 @@ export const incidentProductSchema = z.object({
   breakAfter: z.string(),
 });
 
-export type TIncidentProduct = z.infer<typeof incidentProductSchema>; 
+export type TIncidentProduct = z.infer<typeof incidentProductSchema>;

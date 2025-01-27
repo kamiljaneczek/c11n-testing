@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import {  TIncidentService } from "../../schemas/incident-service.schema";
+import { TIncidentService } from "../../schemas/incident-service.schema";
 import { TIncidentProduct } from "../../schemas/incident-product.schema";
 type IncidentFixture = {
   caseID: string;

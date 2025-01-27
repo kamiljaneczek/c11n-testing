@@ -1,7 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { TIncidentCase } from "./types";
 
-
 /**
  * This function creates an incident case and returns the case ID.
  * It uses a promise to wait for the case ID to be received from the API response.
@@ -89,8 +88,6 @@ export async function approveAssignment(c11nPage: Page) {
 export async function doneAssignment(c11nPage: Page) {
   await c11nPage.getByRole("button", { name: "Done" }).click();
 }
-
-
 
 export async function checkCaseStatus(c11nPage: Page, status: string) {
   await expect(c11nPage.getByTestId(":case-view:summary-fields").getByTestId(":status:")).toContainText(status);

@@ -31,4 +31,4 @@ export const incidentServiceSchema = z.object({
   breakAfter: z.string(),
 });
 
-export type TIncidentService = z.infer<typeof incidentServiceSchema>; 
+export type TIncidentService = z.infer<typeof incidentServiceSchema>;

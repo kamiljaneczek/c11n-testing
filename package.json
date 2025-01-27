@@ -1,7 +1,7 @@
 {
   "name": "c11n-e2e",
   "version": "1.0.0",
-  "description": "End to end tests for C11N",
+  "description": "End to end tests for Constellation based applications",
   "scripts": {
     "build": "tsc",
     "test": "playwright test",

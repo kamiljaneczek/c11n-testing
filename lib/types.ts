@@ -4,8 +4,7 @@
  * This is a simplified version of the response - it only includes the fields that are needed for the tests.
  */
 
-
-export type TBreakAfter = "NONE"| "Create" | "Dispatch" | "Handle Ticket" | "Link Similar" | "Manager Approval" | "Payment" | "Shipment";
+export type TBreakAfter = "NONE" | "Create" | "Dispatch" | "Handle Ticket" | "Link Similar" | "Manager Approval" | "Payment" | "Shipment";
 
 export type TIncidentCase = {
   data: {
@@ -62,7 +61,6 @@ export type TIncidentProductCaseTestData = {
   NPS: number;
   breakAfter: TBreakAfter;
 };
-
 
 export type TIncidentServiceCaseTestData = {
   incidentType: string;

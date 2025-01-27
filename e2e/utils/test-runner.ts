@@ -1,10 +1,9 @@
-import { APIRequestContext, request } from '@playwright/test';
-import dotenv from 'dotenv';
+import { APIRequestContext, request } from "@playwright/test";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 export class TestRunner {
-
   private context: APIRequestContext | null = null;
 
   async setup() {
@@ -12,7 +11,7 @@ export class TestRunner {
       baseURL: process.env.BASE_URL, // Set your base URL here
       extraHTTPHeaders: {
         // Add any headers you need here
-      }
+      },
     });
   }
 
@@ -26,4 +25,4 @@ export class TestRunner {
     }
     return this.context!;
   }
-} 
+}

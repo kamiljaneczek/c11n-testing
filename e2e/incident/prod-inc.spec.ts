@@ -5,10 +5,9 @@ import { caseWorker, customer, dispatcher } from "../../data/users";
 import { checkCaseStatus, createIncidentCaseSelfService, doneAssignment, goToNextStep, submitAssignment } from "../../lib/case";
 import { clickBackdrop, clickSearchButton, fillCurrencyInput, fillDateInput, fillInput, fillSliderInput, fillTextArea, selecetDropdown } from "../../lib/playwright/controls";
 
-import { test  } from "../../lib/playwright/fixtures";
-import { getWidgetByTitle, getWidgetWithMultibleQueuesByTitle } from "../../lib/portal";
+import { test } from "../../lib/playwright/fixtures";
+import { getMyQueues, getWidgetByTitle, getWidgetWithMultibleQueuesByTitle } from "../../lib/portal";
 import { loadIncidentProductData } from "../../lib/load-inc-test-data";
-
 
 test.describe.serial("E2E test for incident case", () => {
   const caseTypeID = "SL-TellUsMoreRef-Work-Incident";
@@ -16,7 +15,7 @@ test.describe.serial("E2E test for incident case", () => {
   let incidentPzInsKey: string;
   let eTag: string;
   let paymentPzInsKey: string;
-    const testData = loadIncidentProductData("incident-product");
+  const testData = loadIncidentProductData("incident-product", "");
 
   test("I can create a product related incident", async ({ c11n }) => {
     const c11nPage = c11n.page;
@@ -39,14 +38,13 @@ test.describe.serial("E2E test for incident case", () => {
     await fillCurrencyInput(c11nPage, "ActualPricePaid", testData.cost.toString());
 
     await fillTextArea(c11nPage, "What", testData.whatHappened);
-    await c11nPage.getByTestId(':date-input:control-month').click();
-    await c11nPage.getByTestId(':date-input:control-month').fill('11');
-    await c11nPage.getByTestId(':date-input:control-day').click();
-    await c11nPage.getByTestId(':date-input:control-day').fill('11');
+    await c11nPage.getByTestId(":date-input:control-month").click();
+    await c11nPage.getByTestId(":date-input:control-month").fill("11");
+    await c11nPage.getByTestId(":date-input:control-day").click();
+    await c11nPage.getByTestId(":date-input:control-day").fill("11");
     await c11nPage.getByTestId(":date-input:control-year").click();
     await c11nPage.getByTestId(":date-input:control-year").fill("2022");
     await fillTextArea(c11nPage, "Where", testData.whereHappened);
-
 
     await goToNextStep(c11nPage);
 
@@ -54,7 +52,7 @@ test.describe.serial("E2E test for incident case", () => {
     await fillInput(c11nPage, "FirstName", testData.contactInfo?.firstName ?? "");
     await fillInput(c11nPage, "LastName", testData.contactInfo?.lastName ?? "");
     await fillInput(c11nPage, "Email", testData.contactInfo?.email ?? "");
-    await c11nPage.getByTestId('PhoneNumber:phone-input:country-code').selectOption('+48');
+    await c11nPage.getByTestId("PhoneNumber:phone-input:country-code").selectOption("+48");
     await c11nPage.getByTestId("PhoneNumber:phone-input:control").click();
     await c11nPage.getByTestId("PhoneNumber:phone-input:control").fill(testData.contactInfo?.phone ?? "");
 
@@ -74,45 +72,60 @@ test.describe.serial("E2E test for incident case", () => {
 
     await submitAssignment(c11nPage);
 
-
     await checkCaseStatus(c11nPage, "Pending-Dispatch");
   });
 
   test("As a dispatcher, I can review the incident and route it to the case worker group", async ({ c11n }) => {
     const caseID = await incidentPzInsKey.split(" ")[1];
 
-
     const c11nPage = c11n.page;
     await c11n.loginToPega(dispatcher);
     const widget = await getWidgetByTitle(c11nPage, "My queues");
-  
-    await widget.getByTestId(':tasks:show-more-less').click();
-    await c11nPage.getByRole('link', { name: `Incident (${caseID})` }).click();
+
+    await widget.getByTestId(":tasks:show-more-less").click();
+    await c11nPage.getByRole("link", { name: `Incident (${caseID})` }).click();
 
     await checkCaseStatus(c11nPage, "Pending-Dispatch");
-    
-    await c11nPage.getByTestId(':assignment:action').click();
+
+    await c11nPage.getByTestId(":assignment:action").click();
     const eligibility = testData.eligibility;
-    // /^`Eligible`$/ 
-    await c11nPage.locator('label').filter({ hasText: new RegExp(`^${eligibility}$`, 'i') }).locator('div').click();
-    await c11nPage.getByRole('button', { name: 'Submit' }).click()
+    // /^`Eligible`$/
+    await c11nPage
+      .locator("label")
+      .filter({ hasText: new RegExp(`^${eligibility}$`, "i") })
+      .locator("div")
+      .click();
+    await c11nPage.getByRole("button", { name: "Submit" }).click();
     //there is type in status
     await checkCaseStatus(c11nPage, "Pending- Handling");
   });
 
   test("As a case worker, I can handle the incident", async ({ c11n }) => {
-
     const caseID = await incidentPzInsKey.split(" ")[1];
     const c11nPage = c11n.page;
     await c11n.loginToPega(caseWorker);
 
+    const changeQueue = await getMyQueues(c11nPage);
+    await changeQueue.click();
+
+    const activeQueue = c11nPage.getByText("My queues: ProductWB_REF");
+
+    const needToChangeQueue = await activeQueue.isHidden();
+
+    if (needToChangeQueue) {
+      // Get and click the service urgent element
+      await c11nPage.getByText("ProductWB_REF").click();
+    }
+
     const widget = await getWidgetWithMultibleQueuesByTitle(c11nPage, "My queues");
-    await widget.getByTestId(':tasks:show-more-less').click();
-    await c11nPage.getByRole('link', { name: `Incident (${caseID})` }).click();
+
+    await widget.getByTestId(":tasks:show-more-less").click();
+
+    await c11nPage.getByRole("link", { name: `Incident (${caseID})` }).click();
 
     await checkCaseStatus(c11nPage, "Pending- Handling");
     //handle ticket
-    await c11nPage.getByTestId(':assignment:action').click();
+    await c11nPage.getByTestId(":assignment:action").click();
     await selecetDropdown(c11nPage, "ResolutionMethod", testData.resolutionMethod);
     await submitAssignment(c11nPage);
 
@@ -123,7 +136,7 @@ test.describe.serial("E2E test for incident case", () => {
     //fullfillment
     await checkCaseStatus(c11nPage, "Pending-Fullfillment");
     await doneAssignment(c11nPage);
-    await c11nPage.getByTestId(':assignment:action').click();
+    await c11nPage.getByTestId(":assignment:action").click();
 
     //dispatch payment
     await submitAssignment(c11nPage);
@@ -132,16 +145,15 @@ test.describe.serial("E2E test for incident case", () => {
     await checkCaseStatus(c11nPage, "Resolved-Completed");
 
     //back to incident case
-    await c11nPage.getByTestId(':menu-button:').click();
-    await c11nPage.getByRole('link', { name: `Incident (${caseID})` }).click();
+    await c11nPage.getByTestId(":menu-button:").click();
+    await c11nPage.getByRole("link", { name: `Incident (${caseID})` }).click();
 
     //followup
     await checkCaseStatus(c11nPage, "Pending-Followup");
-    await c11nPage.getByTestId(':assignment:action').click();
+    await c11nPage.getByTestId(":assignment:action").click();
     await selecetDropdown(c11nPage, "CustomerSentiment", testData.customerSentiment);
     await fillSliderInput(c11nPage, "NPS", testData.NPS.toString());
     await submitAssignment(c11nPage);
     await checkCaseStatus(c11nPage, "Resolved-Completed");
-
   });
 });

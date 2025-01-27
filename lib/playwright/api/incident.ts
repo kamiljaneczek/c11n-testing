@@ -16,12 +16,10 @@ import {
 import { APIRequestContext } from "@playwright/test";
 import { CaseCreateResponseData } from "../../types";
 
-
 export type createCaseAPIResponse = {
   response: CaseCreateResponseData;
   eTag: string;
 };
-
 
 export type submitAssignmentAPIResponse = {
   response: unknown;
@@ -60,8 +58,6 @@ export async function createCaseAPI(request: APIRequestContext, caseTypeID: stri
   }
 }
 
-
-
 export async function submitCreateScreenFAAPI(request: APIRequestContext, eTag: string, pzInskey: string, action: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
   try {
@@ -83,8 +79,6 @@ export async function submitCreateScreenFAAPI(request: APIRequestContext, eTag: 
     throw error;
   }
 }
-
-
 
 export async function submitEligibilityCheckAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
@@ -148,7 +142,6 @@ export async function submitLinkSimilarAPI(request: APIRequestContext, eTag: str
     throw error;
   }
 }
-
 
 export async function submiManagerApprovalAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
