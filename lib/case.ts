@@ -1,5 +1,6 @@
-import { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { TIncidentCase } from "./types";
+
 
 /**
  * This function creates an incident case and returns the case ID.
@@ -75,4 +76,22 @@ export async function createIncidentCaseSelfService(c11nPage: Page): Promise<str
  */
 export async function goToNextStep(c11nPage: Page) {
   await c11nPage.getByRole("button", { name: "Next" }).click();
+}
+
+export async function submitAssignment(c11nPage: Page) {
+  await c11nPage.getByRole("button", { name: "Submit" }).click();
+}
+
+export async function approveAssignment(c11nPage: Page) {
+  await c11nPage.getByRole("button", { name: "Approve" }).click();
+}
+
+export async function doneAssignment(c11nPage: Page) {
+  await c11nPage.getByRole("button", { name: "Done" }).click();
+}
+
+
+
+export async function checkCaseStatus(c11nPage: Page, status: string) {
+  await expect(c11nPage.getByTestId(":case-view:summary-fields").getByTestId(":status:")).toContainText(status);
 }

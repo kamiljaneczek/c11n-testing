@@ -8,3 +8,18 @@ import { Page } from "@playwright/test";
 export const navigateToLP = async (c11nPage: Page, lp: string) => {
   await c11nPage.getByRole("link", { name: lp }).click();
 };
+
+
+export async function getWidgetByTitle(c11nPage: Page, title: string) {
+  return c11nPage.locator(`//h2[starts-with(text(),"${title}")]/ancestor::article`);
+}
+
+
+export async function getWidgetWithMultibleQueuesByTitle(c11nPage: Page, title: string) {
+  return c11nPage.locator(`//span[starts-with(text(),"${title}")]/ancestor::article`);
+}
+
+
+export async function getMyQueues(c11nPage: Page) {
+  return c11nPage.locator(`//span[starts-with(text(),"My queues")]`);
+}

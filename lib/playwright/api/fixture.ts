@@ -1,11 +1,13 @@
 import { test as base } from "@playwright/test";
-
+import {  TIncidentService } from "../../schemas/incident-service.schema";
+import { TIncidentProduct } from "../../schemas/incident-product.schema";
 type IncidentFixture = {
   caseID: string;
   pzInskey: string;
   encodedPzInskey: string;
   eTag: string;
   paymentCaseID: string;
+  testData: TIncidentProduct | TIncidentService;
 };
 
 // Create a test with fixtures

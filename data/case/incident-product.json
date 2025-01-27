@@ -23,8 +23,8 @@
   "resolutionMethod": "Refund",
   "desiredResolution": "Refund",
   "eligibility": "Eligible",
-  "paymentBroker": "Paypal",
+  "paymentBroker": "FastCash",
   "customerSentiment": "Positive",
   "NPS": "$random",
-  "breakAfter": "Dispatch"
+  "breakAfter": "NONE"
 }

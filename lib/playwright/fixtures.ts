@@ -1,15 +1,20 @@
 import { test as base, Page } from "@playwright/test";
 import { loginToPega } from "../../lib/login";
 import { getTellUsMoreUser } from "../../lib/utils";
+import { TIncidentProduct } from "../schemas/incident-product.schema";
+import { TIncidentService } from "../schemas/incident-service.schema";
 
 type C11nFixture = {
   login: LoginPage;
   c11n: C11nPage;
   case: CasePage;
   lp: LPPage;
+  testData: TIncidentProduct | TIncidentService;
 };
 
-type CaseFixtureInputs = C11nFixture & {};
+type CaseFixtureInputs = C11nFixture & {
+  testData: TIncidentProduct | TIncidentService;
+};
 
 // Extend the base test with a custom fixture
 export const test = base.extend<CaseFixtureInputs>({

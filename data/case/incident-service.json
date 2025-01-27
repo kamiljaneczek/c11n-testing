@@ -1,0 +1,26 @@
+{
+  "incidentType": "Customer service issue",
+  "incidentSubType": "Staff conduct issue",
+  "communicationMethod": "Phone",
+  "whatHappened": "$random",
+  "whereHappened": "$random",
+  "whenHappened": "$random",
+  "contactInfo": {
+    "firstName": "$random",
+    "lastName": "$random",
+    "email": "$random",
+    "phone": "$random",
+    "address": {
+      "street": "$random",
+      "city": "$random",
+      "state": "$random",
+      "zip": "$random",
+      "country": "$random"
+    }
+  },
+  "resolutionMethod": "Explanation",
+  "eligibility": "Eligible",
+  "customerSentiment": "Positive",
+  "NPS": "$random",
+  "breakAfter": "NONE"
+}

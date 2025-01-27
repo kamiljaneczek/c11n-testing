@@ -13,7 +13,9 @@ import {
   submitLinkSimilarAPI,
   submitSchedulePaymentAPI,
 } from "../../lib/playwright/api/incident";
-import { incidentProductCase } from "../../data/case/incident-product";
+import { loadIncidentProductData } from "../../lib/load-inc-test-data";
+
+
 
 // Define the fixture type
 
@@ -24,6 +26,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
   let incidentPzInsKey: string;
   let eTag: string;
   let paymentPzInsKey: string;
+  const testData = loadIncidentProductData("incident-product");
 
   test("Create Incident case", async ({ request }) => {
     const caseResponse = await createCaseAPI(request, caseTypeID, "", "");
@@ -36,8 +39,8 @@ test.describe.serial("Create Incident case related to product so customer receiv
   test("Select type and subtype of incident", async ({ request }) => {
     const data = JSON.stringify({
       content: {
-        IncidentType: incidentProductCase.incidentType,
-        IncidentSubType: incidentProductCase.incidentSubType,
+        IncidentType: testData.incidentType,
+        IncidentSubType: testData.incidentSubType,
       },
       pageInstructions: [],
     });
@@ -49,7 +52,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
 
   test("Select product details", async ({ request }) => {
     const data = JSON.stringify({
-        content: { Product: { pyGUID: incidentProductCase.productGUID, Cost: incidentProductCase.cost }, What: incidentProductCase.whatHappened, Where: incidentProductCase.whereHappened, When: incidentProductCase.whenHappened },
+        content: { Product: { pyGUID: testData.productGUID, Cost: testData.cost }, What: testData.whatHappened, Where: testData.whereHappened, When: testData.whenHappened },
       pageInstructions: [],
     });
     const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "ProductDetials", data);
@@ -61,11 +64,11 @@ test.describe.serial("Create Incident case related to product so customer receiv
     const data = JSON.stringify({
       content: {
         Customer: {
-          FName: incidentProductCase.contactInfo?.firstName,
-          LName: incidentProductCase.contactInfo?.lastName,
-          EMail: incidentProductCase.contactInfo?.email,
-          PhoneNumber: incidentProductCase.contactInfo?.phone,
-          Address: { pyStreet: incidentProductCase.contactInfo?.address?.street, pyCity: incidentProductCase.contactInfo?.address?.city, pyPostalCode: incidentProductCase.contactInfo?.address?.zip, pyCountry: incidentProductCase.contactInfo?.address?.country },
+          FName: testData.contactInfo?.firstName,
+          LName: testData.contactInfo?.lastName,
+          EMail: testData.contactInfo?.email,
+          PhoneNumber: testData.contactInfo?.phone,
+          Address: { pyStreet: testData.contactInfo?.address?.street, pyCity: testData.contactInfo?.address?.city, pyPostalCode: testData.contactInfo?.address?.zip, pyCountry: testData.contactInfo?.address?.country },
         },
       },
       pageInstructions: [],
@@ -76,7 +79,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
   });
 
   test("Select desired resolution method", async ({ request }) => {
-    const data = JSON.stringify({ content: { PreferredResolutionMethod: incidentProductCase.desiredResolution }, pageInstructions: [] });
+    const data = JSON.stringify({ content: { PreferredResolutionMethod: testData.desiredResolution }, pageInstructions: [] });
     const response = await submitCreateScreenFAAPI(request, eTag, incidentPzInsKey, "ResolutionMethod", data);
     eTag = response.eTag;
     expect(eTag).not.toBe("");
@@ -89,7 +92,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
     expect(eTag).not.toBe("");
   });
 
-    if (incidentProductCase.breakAfter === "Create") {
+    if (testData.breakAfter === "Create") {
     return;
   }
 
@@ -98,11 +101,11 @@ test.describe.serial("Create Incident case related to product so customer receiv
     const incidentCase = await openCase(request, incidentPzInsKey);
     eTag = incidentCase.eTag;
     expect(eTag).not.toBe("");
-    const data = JSON.stringify({ content: { EligibilityType: incidentProductCase.eligibility, OverwriteAssignment: false, ShallIncreaseUrgency: false }, pageInstructions: [] });
+    const data = JSON.stringify({ content: { EligibilityType: testData.eligibility, OverwriteAssignment: false, ShallIncreaseUrgency: false }, pageInstructions: [] });
     await submitEligibilityCheckAPI(request, eTag, incidentPzInsKey, data);
   });
 
-    if (incidentProductCase.breakAfter === "Dispatch") {
+   if (testData.breakAfter === "Dispatch") {
     return;
   }
 
@@ -111,11 +114,11 @@ test.describe.serial("Create Incident case related to product so customer receiv
     const incidentCase = await openCase(request, incidentPzInsKey);
     eTag = incidentCase.eTag;
     expect(eTag).not.toBe("");
-    const data = JSON.stringify({ content: { ResolutionMethod: incidentProductCase.resolutionMethod }, pageInstructions: [] });
+    const data = JSON.stringify({ content: { ResolutionMethod: testData.resolutionMethod }, pageInstructions: [] });
     await submitHandleTicketAPI(request, eTag, incidentPzInsKey, data);
   });
 
-  if (incidentProductCase.breakAfter === "Handle Ticket") {
+  if (testData.breakAfter === "Handle Ticket") {
     return;
   }
 
@@ -128,7 +131,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
     await submitLinkSimilarAPI(request, eTag, incidentPzInsKey, data);
   });
 
-  if (incidentProductCase.breakAfter === "Link Similar") {
+  if (testData.breakAfter === "Link Similar") {
     return;
   }
 
@@ -161,7 +164,7 @@ test.describe.serial("Create Incident case related to product so customer receiv
     expect(eTag).not.toBe("");
   });
 
-    if (incidentProductCase.breakAfter === "Payment") {
+    if (testData.breakAfter === "Payment") {
     return;
   }
 
