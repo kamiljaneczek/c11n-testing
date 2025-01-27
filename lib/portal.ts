@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 
 /**
  * This function navigates to the LP page.
@@ -23,3 +23,10 @@ export async function getWidgetWithMultibleQueuesByTitle(c11nPage: Page, title: 
 export async function getMyQueues(c11nPage: Page) {
   return c11nPage.locator(`//span[starts-with(text(),"My queues")]`);
 }
+
+
+export async function expectQuickLinksWidgetToBeVisible(c11nPage: Page) {
+    const quickLinksWidget = c11nPage.locator(`//h2[starts-with(text(),"Quick links}")]/ancestor::article`);
+    await expect(quickLinksWidget).toBeVisible();
+}
+

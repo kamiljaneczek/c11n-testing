@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { expect } from "@playwright/test";
-import { caseWorker, caseWorker2, customer, dispatcher, manager } from "../../data/users";
+import { caseWorker, customer, dispatcher, manager } from "../../data/users";
 import { approveAssignment, checkCaseStatus, createIncidentCaseSelfService, doneAssignment, goToNextStep, submitAssignment } from "../../lib/case";
 import { clickBackdrop, clickSearchButton, fillCurrencyInput, fillDateInput, fillInput, fillSliderInput, fillTextArea, selecetDropdown } from "../../lib/playwright/controls";
 
@@ -16,7 +16,7 @@ test.describe.serial("E2E test for incident case", () => {
   let incidentPzInsKey: string;
   let eTag: string;
   let paymentPzInsKey: string;
-    const testData = loadIncidentServiceData("incident-service");
+    const testData = loadIncidentServiceData("incident-service", "");
 
   test("I can create a service related incident", async ({ c11n }) => {
     const c11nPage = c11n.page;
@@ -146,17 +146,25 @@ test.describe.serial("E2E test for incident case", () => {
 
   test("As a case worker, I can resolve the incident", async ({ c11n }) => {
 
-    const caseID = await incidentPzInsKey.split(" ")[1];
+    const caseID = incidentPzInsKey.split(" ")[1];
     const c11nPage = c11n.page;
     await c11n.loginToPega(caseWorker);
 
     const changeQueue = await getMyQueues(c11nPage);
     await changeQueue.click();
-     
-    // Get and click the service urgent element
-    await c11nPage.getByText('ServiceUrgentWB_REF').click();
+
+    const activeQueue = c11nPage.getByText('My queues: CaseWorkersWB_REF')
+    console.log("activeQueue: ", activeQueue)
+    const needToChangeQueue = await activeQueue.isHidden()
+    console.log("needToChangeQueue: ", needToChangeQueue)
+    
+    if(needToChangeQueue) {   // Get and click the service urgent element
+      await c11nPage.getByText('CaseWorkersWB_REF').click();
+    }
     
     const widget = await getWidgetWithMultibleQueuesByTitle(c11nPage, "My queues");
+
+
     await widget.getByTestId(':tasks:show-more-less').click();
     
 

@@ -16,17 +16,18 @@ import {
 import { loadIncidentProductData } from "../../lib/load-inc-test-data";
 
 
-
+  let incidentPzInsKey: string;
+  let paymentPzInsKey: string;
+export const runProdIncAPI = async (breakAfter?: string) => {
 // Define the fixture type
 
 // Change to test.describe.serial to run tests in sequence
 test.describe.serial("Create Incident case related to product so customer receive help to thier issues - API", async () => {
   const caseTypeID = "SL-TellUsMoreRef-Work-Incident";
   const workPool = "SL-TellUsMoreRef-Work";
-  let incidentPzInsKey: string;
+
   let eTag: string;
-  let paymentPzInsKey: string;
-  const testData = loadIncidentProductData("incident-product");
+  const testData = loadIncidentProductData("incident-product", breakAfter ?? "");
 
   test("Create Incident case", async ({ request }) => {
     const caseResponse = await createCaseAPI(request, caseTypeID, "", "");
@@ -179,3 +180,6 @@ test.describe.serial("Create Incident case related to product so customer receiv
     expect(incidentStatus.status).toBe("Resolved-Completed");
   });
 });
+  return {incidentPzInsKey, paymentPzInsKey};
+
+}

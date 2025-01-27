@@ -22,6 +22,12 @@ export type createCaseAPIResponse = {
   eTag: string;
 };
 
+
+export type submitAssignmentAPIResponse = {
+  response: unknown;
+  eTag: string;
+};
+
 export async function createCaseAPI(request: APIRequestContext, caseTypeID: string, parentCaseID: string, content: string): Promise<createCaseAPIResponse> {
   const oauth2Token = await authenticateAPI();
 
@@ -54,12 +60,9 @@ export async function createCaseAPI(request: APIRequestContext, caseTypeID: stri
   }
 }
 
-export type submitCreateScreenFAAPIResponse = {
-  response: unknown;
-  eTag: string;
-};
 
-export async function submitCreateScreenFAAPI(request: APIRequestContext, eTag: string, pzInskey: string, action: string, data: string): Promise<submitCreateScreenFAAPIResponse> {
+
+export async function submitCreateScreenFAAPI(request: APIRequestContext, eTag: string, pzInskey: string, action: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();
   try {
     const response = await request.patch(submitCreateScreenFAURL(pzInskey, action), {
@@ -81,10 +84,7 @@ export async function submitCreateScreenFAAPI(request: APIRequestContext, eTag: 
   }
 }
 
-export type submitAssignmentAPIResponse = {
-  response: unknown;
-  eTag: string;
-};
+
 
 export async function submitEligibilityCheckAPI(request: APIRequestContext, eTag: string, pzInskey: string, data: string): Promise<submitAssignmentAPIResponse> {
   const oauth2Token = await authenticateAPI();

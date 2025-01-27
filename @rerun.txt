@@ -1,3 +1,0 @@
-features/create-product-related-inc.feature:11
-features/create-service-related-inc.feature:7
-features/incident_follow_up.feature:7

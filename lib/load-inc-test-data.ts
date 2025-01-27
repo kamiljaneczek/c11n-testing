@@ -4,7 +4,7 @@ import { incidentServiceSchema, TIncidentService } from "./schemas/incident-serv
 import * as fs from "fs";
 import * as path from "path";
 
-export function loadIncidentProductData(filename: string): TIncidentProduct {
+export function loadIncidentProductData(filename: string, breakAfter: string): TIncidentProduct {
   const jsonPath = path.join(process.cwd(), "data", "case", `${filename}.json`);
   const jsonData = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
   
@@ -32,13 +32,17 @@ export function loadIncidentProductData(filename: string): TIncidentProduct {
     },
     NPS: jsonData.NPS === "$random" ? faker.number.int({ min: 7, max: 10 }) : jsonData.NPS,
   };
+
+  if (breakAfter) {
+    processedData.breakAfter = breakAfter;
+  }
   const parsedData = incidentProductSchema.parse(processedData);
   // Validate the processed data
   return parsedData;
 } 
 
 
-export function loadIncidentServiceData(filename: string): TIncidentService {
+export function loadIncidentServiceData(filename: string, breakAfter: string): TIncidentService {
   const jsonPath = path.join(process.cwd(), "data", "case", `${filename}.json`);
   const jsonData = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 
@@ -66,6 +70,10 @@ export function loadIncidentServiceData(filename: string): TIncidentService {
     },
     NPS: jsonData.NPS === "$random" ? faker.number.int({ min: 7, max: 10 }) : jsonData.NPS,
   };
+
+  if (breakAfter) {
+    processedData.breakAfter = breakAfter;
+  }
   const parsedData = incidentServiceSchema.parse(processedData);
   // Validate the processed data
   return parsedData;
