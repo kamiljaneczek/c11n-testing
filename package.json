@@ -12,8 +12,7 @@
     "lint": "pnpm dlx eslint",
     "format": "prettier --write .",
     "codegen": "playwright codegen",
-    "cucumber:bkp": "cucumber-js features/**/*.feature --require world/custom-world.ts --require step-definitions/**/*.ts --require hooks/**/*.ts  --require-module ts-node/register",
-    "cucumber": "cross-env ENV=prod FORCE_COLOR=1 cucumber-js --config=config/cucumber.js || true",
+    "cucumber": "cross-env ENV=prod FORCE_COLOR=1 cucumber-js --config=cucumber.js || true",
     "test-runner": "ts-node test_runner/cli.ts"
   },
   "devDependencies": {
