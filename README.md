@@ -18,7 +18,9 @@ install dependencies
 
 ```bash
 pnpm install
+pnpm exec playwright install 
 ```
+
 
 create .env file
 
